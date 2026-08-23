@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>点亮足迹 · 我的中国地图</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+    <!-- 顶栏 -->
+    <header class="topbar">
+      <div class="logo">
+        <span class="logo-icon">📍</span>
+        <div class="logo-text">
+          <h1>点亮足迹</h1>
+          <p>点亮每一座去过的城市</p>
+        </div>
+      </div>      <div class="actions">
+        <button class="btn ghost" id="exportBtn" title="将足迹数据导出为 JSON 备份文件">⬇ 导出备份</button>
+        <button class="btn ghost" id="importBtn" title="从备份文件恢复足迹数据">⬆ 导入备份</button>
+        <input type="file" id="importFile" accept=".json,application/json" hidden>
+      </div>
+    </header>
+
+    <!-- 主体布局 -->
+    <div class="layout">
+      <!-- 左侧面板 -->
+      <aside class="sidebar">
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.5" y2="16.5"></line>
+          </svg>
+          <input id="searchInput" type="text" placeholder="搜索城市，如：深圳 / 大理" autocomplete="off">
+          <div id="suggestList" class="suggest"></div>
+        </div>
+
+        <div class="stats">
+          <div class="stat-card">
+            <span class="stat-icon">🏙️</span>
+            <b id="statCities">0</b>
+            <span>去过城市</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon">🗺️</span>
+            <b id="statProvinces">0</b>
+            <span>覆盖省份</span>
+          </div>
+        </div>
+
+        <div class="list-wrap">
+          <div class="list-header">
+            <span>足迹城市</span>
+            <span id="listCount" class="list-count"></span>
+          </div>
+          <div id="cityList" class="city-list"></div>
+        </div>
+      </aside>
+
+      <!-- 地图区 -->
+      <main class="map-area">
+        <div id="map" class="map"></div>
+
+        <!-- 城市详情浮层 -->
+        <div id="detailPanel" class="detail-panel">
+          <button class="detail-close" id="detailClose" title="关闭">×</button>
+          <h3 id="dName"></h3>
+          <div id="dProvince" class="d-province"></div>
+          <div class="d-status"><span class="dot"></span>已点亮</div>
+          <div class="d-actions">
+            <button class="btn" id="dLocate">📍 地图定位</button>
+            <button class="btn danger" id="dRemove">取消点亮</button>
+          </div>
+        </div>
+
+        <!-- 轻提示 -->
+        <div id="toast" class="toast"></div>
+      </main>
+    </div>
+  </div>
+
+  <!-- 依赖加载顺序：库 → 地图数据 → 业务模块 -->
+  <script src="lib/echarts.min.js"></script>
+  <script src="data/china_cities.js"></script>
+  <script src="js/dataStore.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
