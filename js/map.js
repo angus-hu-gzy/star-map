@@ -202,5 +202,10 @@
     provinceStats() {
       return provinceStats;
     },
+
+    /** 暴露 ECharts 实例（供分享图片导出等使用） */
+    _chart() {
+      return chart;
+    },
   };
 })(window);

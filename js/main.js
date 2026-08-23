@@ -24,6 +24,18 @@
     dName: $('dName'),
     dProvince: $('dProvince'),
     toast: $('toast'),
+    shareBtn: $('shareBtn'),
+    sharePanel: $('sharePanel'),
+    shareMask: $('shareMask'),
+    shareClose: $('shareClose'),
+    shareText: $('shareText'),
+    shareLink: $('shareLink'),
+    shareCopyLink: $('shareCopyLink'),
+    shareCopyText: $('shareCopyText'),
+    shareImage: $('shareImage'),
+    shareBanner: $('shareBanner'),
+    shareBannerClose: $('shareBannerClose'),
+    dRemove: $('dRemove'),
   };
 
   // ---------------- 工具 ----------------
@@ -42,6 +54,7 @@
   // ---------------- 状态 ----------------
   let footprints = [];       // 最新足迹列表
   let currentDetail = null;  // 详情面板当前城市 {adcode,name,center}
+  let isShareMode = false;   // 通过 ?share= 链接进入的只读分享视图
 
   // ---------------- 数据刷新 ----------------
   async function refreshAll(next) {
@@ -81,6 +94,10 @@
 
   // ---------------- 地图点击 / 城市选中 ----------------
   async function onCityPick(city) {
+    if (isShareMode) {
+      toast('这是分享的地图（只读），不能修改');
+      return;
+    }
     const hit = footprints.find((fp) => fp.adcode === city.adcode);
     if (hit) {
       openDetail(hit);
@@ -97,6 +114,7 @@
     el.dName.textContent = fp.name;
     const pv = NS.MapView.provinceStats()[fp.adcode.slice(0, 2) + '0000'];
     el.dProvince.textContent = pv ? pv.name : '';
+    el.dRemove.style.display = isShareMode ? 'none' : '';
     el.detailPanel.classList.add('show');
   }
 
@@ -171,6 +189,17 @@
     reader.readAsText(file);
   }
 
+  // ---------------- 分享 ----------------
+  function openSharePanel() {
+    el.shareText.textContent = NS.Share.summary(footprints, NS.MapView.provinceStats());
+    el.shareLink.value = NS.Share.buildLink(footprints);
+    el.sharePanel.classList.add('show');
+  }
+
+  function closeSharePanel() {
+    el.sharePanel.classList.remove('show');
+  }
+
   // ---------------- 事件绑定 ----------------
   function bindEvents() {
     // 地图点击：已点亮 → 详情；未点亮 → 直接点亮
@@ -216,6 +245,24 @@
       if (e.target.files.length) importBackup(e.target.files[0]);
       e.target.value = '';
     });
+
+    // 分享
+    el.shareBtn.addEventListener('click', openSharePanel);
+    el.shareClose.addEventListener('click', closeSharePanel);
+    el.shareMask.addEventListener('click', closeSharePanel);
+    el.shareCopyLink.addEventListener('click', async () => {
+      const ok = await NS.Share.copyLink(footprints);
+      toast(ok ? '✅ 链接已复制，发给朋友吧' : '复制失败，请手动选择链接');
+    });
+    el.shareCopyText.addEventListener('click', async () => {
+      const ok = await NS.Share.copySummary(footprints, NS.MapView.provinceStats());
+      toast(ok ? '✅ 文字版已复制' : '复制失败，请手动复制预览文字');
+    });
+    el.shareImage.addEventListener('click', () => {
+      const ok = NS.Share.downloadImage();
+      toast(ok ? '🖼️ 图片已开始下载' : '暂无地图可导出');
+    });
+    el.shareBannerClose.addEventListener('click', () => el.shareBanner.classList.add('hidden'));
   }
 
   // ---------------- 启动 ----------------
@@ -224,7 +271,24 @@
       NS.Search.index();
       NS.MapView.init(el.map);
       bindEvents();
-      await refreshAll();
+
+      // 检测分享链接（?share=adcode,adcode,...）
+      const shared = NS.Share.parseFromUrl();
+      if (shared.length) {
+        isShareMode = true;
+        el.shareBanner.classList.remove('hidden');
+        $('exportBtn').style.display = 'none';
+        $('importBtn').style.display = 'none';
+        const list = shared
+          .map((adcode) => {
+            const c = NS.MapView.city(adcode);
+            return c ? { adcode, name: c.name } : null;
+          })
+          .filter(Boolean);
+        await refreshAll(list);
+      } else {
+        await refreshAll();
+      }
     } catch (e) {
       console.error('[点亮足迹] 初始化失败', e);
     }

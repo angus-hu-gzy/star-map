@@ -1,0 +1,15 @@
+# 系统/编辑器临时文件
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+*.swp
+
+# 构建中间产物（可随时重跑 tools/build_cities.js 生成）
+data/_province_raw/
+data/_parent_analysis.json
+
+# 本地服务器/环境
+__pycache__/
+*.pyc

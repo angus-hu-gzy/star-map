@@ -419,6 +419,124 @@ body {
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* ════════════════════════════════════════════════
+   分享面板（Modal）
+   ════════════════════════════════════════════════ */
+.share-panel {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-base);
+}
+.share-panel.show { opacity: 1; pointer-events: auto; }
+
+.share-mask {
+  position: absolute;
+  inset: 0;
+  background: rgba(31, 41, 55, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.share-box {
+  position: relative;
+  width: 420px;
+  max-width: calc(100vw - 40px);
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 24px;
+  transform: translateY(16px) scale(0.96);
+  transition: transform var(--t-spring);
+}
+.share-panel.show .share-box { transform: none; }
+
+.share-close {
+  position: absolute; top: 12px; right: 14px;
+  border: none; background: none;
+  font-size: 20px; color: var(--text-faint);
+  cursor: pointer; line-height: 1;
+  width: 28px; height: 28px; border-radius: 50%;
+  transition: all var(--t-fast);
+}
+.share-close:hover { color: var(--text); background: #f1f3f7; }
+
+.share-box h3 { font-size: 17px; margin-bottom: 4px; }
+.share-desc { font-size: 12px; color: var(--text-faint); margin-bottom: 16px; }
+
+.share-text-preview {
+  background: var(--primary-050);
+  border: 1px solid #ffe3cd;
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 12px;
+  min-height: 40px;
+  max-height: 120px;
+  overflow-y: auto;
+  word-break: break-all;
+}
+
+.share-link-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.share-link-row input {
+  flex: 1;
+  min-width: 0;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: var(--text-sub);
+  background: #f8fafc;
+  outline: none;
+  font-family: var(--font);
+}
+
+.share-actions { display: flex; gap: 8px; }
+.share-actions .btn { flex: 1; }
+
+.share-tip { margin-top: 14px; font-size: 11px; color: var(--text-faint); line-height: 1.6; }
+
+/* ════════════════════════════════════════════════
+   分享只读提示条
+   ════════════════════════════════════════════════ */
+.share-banner {
+  position: absolute;
+  top: 14px; left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(31, 41, 55, 0.88);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 13px;
+  padding: 9px 12px 9px 16px;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  z-index: 50;
+  white-space: nowrap;
+}
+.share-banner.hidden { display: none; }
+.share-banner-close {
+  border: none; background: rgba(255, 255, 255, 0.15);
+  color: #fff; cursor: pointer;
+  width: 22px; height: 22px; border-radius: 50%;
+  font-size: 14px; line-height: 1;
+  transition: background var(--t-fast);
+}
+.share-banner-close:hover { background: rgba(255, 255, 255, 0.3); }
+
+/* ════════════════════════════════════════════════
    响应式
    ════════════════════════════════════════════════ */
 @media (max-width: 860px) {
