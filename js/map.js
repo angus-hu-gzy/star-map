@@ -21,14 +21,14 @@
   let footprintMap = new Map(); // adcode -> footprint
 
   const MAP_NAME = 'china_cities';
-  // 星空主题：已点亮 = 夜空里的金星（带发光），未点亮 = 深蓝大陆剪影
+  // 星空主题·蓝调银河：已点亮 = 星蓝（蓝巨星，带发光），未点亮 = 深蓝大陆剪影
   const COLORS = {
-    lit: '#ffc94d',          // 已点亮：金星
-    litBorder: '#fff3d6',
+    lit: '#5b8cff',          // 已点亮：星蓝
+    litBorder: '#dbe7ff',
     none: '#1c2547',         // 未点亮：深空蓝灰（大陆剪影）
     border: '#3d4d7d',       // 边界：暗星光蓝
     labelNormal: '#8ea1c9',
-    labelLit: '#fff8e6',
+    labelLit: '#f0f6ff',
   };
 
   // ---------------- 内部 ----------------
@@ -61,7 +61,7 @@
           borderColor: COLORS.litBorder,
           borderWidth: 1.2,
           shadowBlur: 18,
-          shadowColor: 'rgba(255, 201, 77, 0.55)',
+          shadowColor: 'rgba(91, 140, 255, 0.55)',
         };
         item.label = {
           show: true,
@@ -96,7 +96,7 @@
           if (pv) lines.push(`<span style="color:#6d7fa6">${pv.name}</span>`);
           if (fp) {
             lines.push(
-              `<div style="margin-top:6px;color:#ffc94d;font-weight:600;text-shadow:0 0 8px rgba(255,201,77,0.6)">★ 已点亮</div>`,
+              `<div style="margin-top:6px;color:#5b8cff;font-weight:600;text-shadow:0 0 8px rgba(91,140,255,0.6)">★ 已点亮</div>`,
               `<div style="color:#6d7fa6;font-size:12px">点击可取消点亮</div>`
             );
           } else {
@@ -142,13 +142,13 @@
             borderWidth: 0.8,
           },
           emphasis: {
-            label: { show: true, color: '#fff8e6', fontSize: 13, fontWeight: 'bold' },
+            label: { show: true, color: '#f0f6ff', fontSize: 13, fontWeight: 'bold' },
             itemStyle: {
-              areaColor: '#ffe08a',
+              areaColor: '#8ab0ff',
               borderColor: '#ffffff',
               borderWidth: 1.6,
               shadowBlur: 26,
-              shadowColor: 'rgba(255, 224, 138, 0.8)',
+              shadowColor: 'rgba(138, 176, 255, 0.8)',
             },
           },
           select: {
