@@ -169,7 +169,10 @@
         NS.onCityClick && NS.onCityClick({ adcode: p.adcode, name: p.name, center: p.center });
       });
 
-      window.addEventListener('resize', () => chart && chart.resize());
+      // 窗口大小 / 方向变化时强制 ECharts 重算（移动端横竖屏切换等场景）
+      const handleResize = () => chart && chart.resize();
+      window.addEventListener('resize', handleResize);
+      window.addEventListener('orientationchange', () => setTimeout(handleResize, 200));
       return this;
     },
 

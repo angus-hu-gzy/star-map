@@ -542,9 +542,11 @@ body {
 @media (max-width: 860px) {
   body { overflow: auto; }
   .app { height: auto; min-height: 100vh; }
-  .layout { flex-direction: column; }
-  .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+  .layout { flex-direction: column; flex: 0 0 auto; }
+  .sidebar { width: 100%; flex-shrink: 0; border-right: none; border-bottom: 1px solid var(--border); }
   .city-list { max-height: 220px; }
-  .map-area { height: 62vh; }
+  /* 移动端：禁用 flex 拉伸，给地图区一个确定的最小高度，避免 ECharts 拿到 0 高度不渲染 */
+  .map-area { flex: 0 0 auto; height: 65vh; min-height: 420px; }
+  .map { width: 100%; height: 100%; }
   .actions .btn { font-size: 12px; padding: 7px 11px; }
 }
