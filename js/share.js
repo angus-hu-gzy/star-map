@@ -104,7 +104,7 @@
       const url = chart.getDataURL({
         type: 'png',
         pixelRatio: 2,
-        backgroundColor: '#ffffff',
+        backgroundColor: '#080d20', // 星空底色，与页面夜空一致
       });
       const a = document.createElement('a');
       a.href = url;

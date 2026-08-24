@@ -7,6 +7,9 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <!-- 星空背景层（星星闪烁动画，见 js/stars.js） -->
+  <canvas id="stars-canvas" aria-hidden="true"></canvas>
+
   <div class="app">
     <!-- 顶栏 -->
     <header class="topbar">
@@ -108,9 +111,10 @@
     </div>
   </div>
 
-  <!-- 依赖加载顺序：库 → 地图数据 → 业务模块 -->
+  <!-- 依赖加载顺序：库 → 地图数据 → 星空背景 → 业务模块 -->
   <script src="lib/echarts.min.js"></script>
   <script src="data/china_cities.js"></script>
+  <script src="js/stars.js"></script>
   <script src="js/dataStore.js"></script>
   <script src="js/search.js"></script>
   <script src="js/map.js"></script>

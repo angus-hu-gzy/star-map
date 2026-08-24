@@ -21,13 +21,14 @@
   let footprintMap = new Map(); // adcode -> footprint
 
   const MAP_NAME = 'china_cities';
+  // 星空主题：已点亮 = 夜空里的金星（带发光），未点亮 = 深蓝大陆剪影
   const COLORS = {
-    lit: '#f76707',          // 已点亮：亮橙
-    litBorder: '#ffffff',
-    none: '#e9ecef',         // 未点亮：浅灰
-    border: '#cfd8e3',
-    labelNormal: '#9aa5b1',
-    labelLit: '#ffffff',
+    lit: '#ffc94d',          // 已点亮：金星
+    litBorder: '#fff3d6',
+    none: '#1c2547',         // 未点亮：深空蓝灰（大陆剪影）
+    border: '#3d4d7d',       // 边界：暗星光蓝
+    labelNormal: '#8ea1c9',
+    labelLit: '#fff8e6',
   };
 
   // ---------------- 内部 ----------------
@@ -55,14 +56,20 @@
         value: fp ? 2 : 0,
       };
       if (fp) {
-        item.itemStyle = { areaColor: COLORS.lit, borderColor: COLORS.litBorder, borderWidth: 1.2 };
+        item.itemStyle = {
+          areaColor: COLORS.lit,
+          borderColor: COLORS.litBorder,
+          borderWidth: 1.2,
+          shadowBlur: 18,
+          shadowColor: 'rgba(255, 201, 77, 0.55)',
+        };
         item.label = {
           show: true,
           color: COLORS.labelLit,
           fontSize: 10,
           fontWeight: 'bold',
-          textShadowBlur: 2,
-          textShadowColor: 'rgba(0,0,0,0.35)',
+          textShadowBlur: 4,
+          textShadowColor: 'rgba(0, 0, 0, 0.6)',
         };
       }
       data.push(item);
@@ -76,24 +83,24 @@
         trigger: 'item',
         confine: true,
         hideDelay: 150,
-        backgroundColor: 'rgba(255,255,255,0.96)',
-        borderColor: '#e3e8ef',
+        backgroundColor: 'rgba(13, 19, 44, 0.94)',
+        borderColor: 'rgba(255, 255, 255, 0.14)',
         borderWidth: 1,
         padding: [10, 14],
-        textStyle: { color: '#334155', fontSize: 13 },
-        extraCssText: 'box-shadow: 0 8px 24px rgba(15,23,42,0.12); border-radius: 10px;',
+        textStyle: { color: '#e8edf7', fontSize: 13 },
+        extraCssText: 'box-shadow: 0 10px 28px rgba(0,0,0,0.55); border-radius: 10px; backdrop-filter: blur(8px);',
         formatter(params) {
           const fp = footprintMap.get(params.data && params.data.adcode);
           const pv = provinceStats[params.data && params.data.adcode && params.data.adcode.slice(0, 2) + '0000'];
           const lines = [`<b>${params.name}</b>`];
-          if (pv) lines.push(`<span style="color:#94a3b8">${pv.name}</span>`);
+          if (pv) lines.push(`<span style="color:#6d7fa6">${pv.name}</span>`);
           if (fp) {
             lines.push(
-              `<div style="margin-top:6px;color:#f76707;font-weight:600">● 已点亮</div>`,
-              `<div style="color:#94a3b8;font-size:12px">点击可取消点亮</div>`
+              `<div style="margin-top:6px;color:#ffc94d;font-weight:600;text-shadow:0 0 8px rgba(255,201,77,0.6)">★ 已点亮</div>`,
+              `<div style="color:#6d7fa6;font-size:12px">点击可取消点亮</div>`
             );
           } else {
-            lines.push(`<div style="margin-top:6px;color:#94a3b8">未点亮 · 点击点亮</div>`);
+            lines.push(`<div style="margin-top:6px;color:#6d7fa6">未点亮 · 点击点亮一颗星</div>`);
           }
           return lines.join('<br/>');
         },
@@ -107,7 +114,7 @@
         orient: 'vertical',
         itemWidth: 16,
         itemHeight: 10,
-        textStyle: { color: '#64748b', fontSize: 12 },
+        textStyle: { color: '#a3b1d6', fontSize: 12 },
         pieces: [
           { min: 2, max: 2, label: '已点亮', color: COLORS.lit },
           { min: 0, max: 0, label: '未点亮', color: COLORS.none },
@@ -135,11 +142,13 @@
             borderWidth: 0.8,
           },
           emphasis: {
-            label: { show: true, color: '#334155', fontSize: 13, fontWeight: 'bold' },
+            label: { show: true, color: '#fff8e6', fontSize: 13, fontWeight: 'bold' },
             itemStyle: {
-              areaColor: '#ff922b',
-              borderColor: '#f76707',
-              borderWidth: 1.4,
+              areaColor: '#ffe08a',
+              borderColor: '#ffffff',
+              borderWidth: 1.6,
+              shadowBlur: 26,
+              shadowColor: 'rgba(255, 224, 138, 0.8)',
             },
           },
           select: {
