@@ -215,6 +215,12 @@
       return provinceStats;
     },
 
+    /** 强制重算地图尺寸（列表折叠/展开后调用） */
+    resize() {
+      chart && chart.resize();
+      return this;
+    },
+
     /** 暴露 ECharts 实例（供分享图片导出等使用） */
     _chart() {
       return chart;

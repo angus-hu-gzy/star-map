@@ -20,6 +20,9 @@
     statProvinces: $('statProvinces'),
     cityList: $('cityList'),
     listCount: $('listCount'),
+    listWrap: $('listWrap'),
+    listHeader: $('listHeader'),
+    listToggle: $('listToggle'),
     detailPanel: $('detailPanel'),
     dName: $('dName'),
     dProvince: $('dProvince'),
@@ -55,6 +58,18 @@
   let footprints = [];       // 最新足迹列表
   let currentDetail = null;  // 详情面板当前城市 {adcode,name,center}
   let isShareMode = false;   // 通过 ?share= 链接进入的只读分享视图
+
+  // ---------------- 足迹列表折叠 / 展开 ----------------
+  const LIST_STATE_KEY = 'fp.listCollapsed';
+
+  function setListCollapsed(collapsed, persist) {
+    el.listWrap.classList.toggle('collapsed', collapsed);
+    if (persist) {
+      try { localStorage.setItem(LIST_STATE_KEY, collapsed ? '1' : '0'); } catch (e) { /* 隐私模式等场景忽略 */ }
+    }
+    // 列表收起后地图可视区域变化，强制重排
+    requestAnimationFrame(() => NS.MapView.resize());
+  }
 
   // ---------------- 数据刷新 ----------------
   async function refreshAll(next) {
@@ -224,6 +239,11 @@
       }
     });
 
+    // 足迹列表：点击标题栏（或箭头按钮）折叠/展开
+    el.listHeader.addEventListener('click', () => {
+      setListCollapsed(!el.listWrap.classList.contains('collapsed'), true);
+    });
+
     // 详情面板
     $('detailClose').addEventListener('click', closeDetail);
     $('dLocate').addEventListener('click', () => {
@@ -271,6 +291,11 @@
       NS.Search.index();
       NS.MapView.init(el.map);
       bindEvents();
+
+      // 恢复上次的折叠状态（记忆用户选择）
+      try {
+        if (localStorage.getItem(LIST_STATE_KEY) === '1') setListCollapsed(true, false);
+      } catch (e) { /* 忽略 */ }
 
       // 检测分享链接（?share=adcode,adcode,...）
       const shared = NS.Share.parseFromUrl();

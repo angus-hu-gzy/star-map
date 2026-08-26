@@ -54,10 +54,15 @@
           </div>
         </div>
 
-        <div class="list-wrap">
-          <div class="list-header">
+        <div class="list-wrap" id="listWrap">
+          <div class="list-header" id="listHeader" title="点击折叠/展开列表">
             <span>足迹城市</span>
-            <span id="listCount" class="list-count"></span>
+            <span class="list-header-right">
+              <span id="listCount" class="list-count"></span>
+              <button class="list-toggle" id="listToggle" aria-label="折叠/展开城市列表">
+                <svg viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4 Z"/></svg>
+              </button>
+            </span>
           </div>
           <div id="cityList" class="city-list"></div>
         </div>
